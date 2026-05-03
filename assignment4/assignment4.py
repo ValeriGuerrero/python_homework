@@ -46,22 +46,18 @@ print(employee_shape)
 more_employees.info()
 
 #Task 4
-read_dirty_data = pd.read_csv('dirty_data.csv')
-dirty_data = pd.DataFrame(read_dirty_data)
+dirty_data = pd.read_csv('dirty_data.csv')
 print("Task 4", dirty_data)
 
 clean_data = dirty_data.copy()
 
-print(clean_data.duplicated())
-
-#no_duplicate_rows = clean_data.drop_duplicates() creates new dataframe 
 print(clean_data.drop_duplicates(inplace=True)) #changes the original dataframe
 
 clean_data["Age"] = pd.to_numeric(clean_data["Age"], errors="coerce")
 print(clean_data)
 
-clean_data["Salary"] = pd.to_numeric(clean_data["Salary"], errors="coerce")
 clean_data["Salary"] = clean_data["Salary"].replace("n/a", pd.NA)
+clean_data["Salary"] = pd.to_numeric(clean_data["Salary"], errors="coerce")
 print(clean_data)
 
 clean_data["Age"] = clean_data["Age"].fillna(clean_data["Age"].mean())
@@ -71,13 +67,10 @@ clean_data["Salary"] = clean_data["Salary"].fillna(clean_data["Salary"].median()
 print(clean_data)
 
 clean_data["Hire Date"] = pd.to_datetime(clean_data["Hire Date"], errors="coerce")
+clean_data["Hire Date"] = clean_data["Hire Date"].fillna(pd.Timestamp("2000-01-01"))
 
 print("Dates", clean_data)
 
-clean_data[["Name", "Department"]] = clean_data[["Name", "Department"]].apply(lambda x : x.str.strip())
-
-clean_data[["Name", "Department"]] = clean_data[["Name", "Department"]].apply(lambda x : x.str.upper())
-
-clean_data["Hire Date"] = pd.to_datetime(clean_data["Hire Date"].isna().sum(), errors="coerce")
+clean_data[["Name", "Department"]] = clean_data[["Name", "Department"]].apply(lambda x : x.str.strip().str.upper())
 
 print(clean_data)
